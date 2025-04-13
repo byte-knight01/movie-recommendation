@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Recommendations</h1>
+        <div class="card">
+            <h2>Movies similar to "{{ selected_movie }}"</h2>
+            
+            {% if recommendations %}
+                <div class="recommendations">
+                    {% for movie in recommendations %}
+                    <div class="movie-item">
+                        <h3>{{ movie.title }}</h3>
+                        <p class="genres">{{ movie.genres }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-results">No recommendations found.</p>
+            {% endif %}
+            
+            <div class="actions">
+                <a href="/" class="btn">Try Another Movie</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
