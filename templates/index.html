@@ -1,28 +1,53 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Recommender</title>
+    <title>Intelligent Movie Recommender</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Simple Movie Recommender</h1>
+        <header>
+            <h1>Intelligent Movie Recommender System</h1>
+            <p class="subtitle">Powered by AI/ML Content-Based Filtering</p>
+        </header>
+        
         <div class="card">
-            <form action="/recommend" method="post">
-                <div class="form-group">
-                    <label for="movie">Select a movie you like:</label>
-                    <select name="movie" id="movie" required>
-                        <option value="">-- Select a movie --</option>
-                        {% for movie in movies %}
-                        <option value="{{ movie }}">{{ movie }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <button type="submit" class="btn">Get Recommendations</button>
-            </form>
+            <div class="info-section">
+                <h2>How It Works</h2>
+                <p>This movie recommender uses advanced AI and machine learning techniques to suggest movies similar to ones you like. The system analyzes movie attributes including:</p>
+                <ul>
+                    <li>Genre combinations</li>
+                    <li>Director styles</li>
+                    <li>Cast members</li>
+                    <li>Plot themes and keywords</li>
+                </ul>
+                <p>Using TF-IDF vectorization and cosine similarity algorithms, we measure the content similarity between movies to provide personalized recommendations.</p>
+            </div>
+            
+            <div class="form-section">
+                <h2>Find Similar Movies</h2>
+                <form action="/recommend" method="post">
+                    <div class="form-group">
+                        <label for="movie">Select a movie you enjoy:</label>
+                        <select name="movie" id="movie" required>
+                            <option value="">-- Select a movie --</option>
+                            {% for movie in movies %}
+                            <option value="{{ movie }}">{{ movie }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Get Recommendations</button>
+                </form>
+            </div>
         </div>
+        
+        <footer>
+            <p>Based on research: "Intelligent Movie Recommendation System Using AI and ML"</p>
+            <p>Implementation uses Content-Based Filtering with TF-IDF and NLP techniques</p>
+        </footer>
     </div>
 </body>
 </html>

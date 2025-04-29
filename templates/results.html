@@ -1,3 +1,4 @@
+<!-- templates/results.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,27 +9,53 @@
 </head>
 <body>
     <div class="container">
-        <h1>Movie Recommendations</h1>
+        <header>
+            <h1>Intelligent Movie Recommendations</h1>
+            <p class="subtitle">Content-Based Filtering Results</p>
+        </header>
+        
         <div class="card">
-            <h2>Movies similar to "{{ selected_movie }}"</h2>
+            <div class="selected-movie">
+                <h2>Movies similar to "{{ selected_movie }}"</h2>
+                <p class="process-info">Results generated in {{ process_time|round(3) }} seconds</p>
+            </div>
             
             {% if recommendations %}
                 <div class="recommendations">
                     {% for movie in recommendations %}
                     <div class="movie-item">
-                        <h3>{{ movie.title }}</h3>
-                        <p class="genres">{{ movie.genres }}</p>
+                        <div class="movie-header">
+                            <h3>{{ movie.title }}</h3>
+                            <span class="similarity-score">{{ movie.similarity }}% match</span>
+                        </div>
+                        <div class="movie-details">
+                            <p><strong>Year:</strong> {{ movie.year }}</p>
+                            <p><strong>Director:</strong> {{ movie.director }}</p>
+                            <p><strong>Genres:</strong> {{ movie.genres }}</p>
+                        </div>
+                        <div class="similarity-bar">
+                            <div class="bar-fill" style="width: {{ movie.similarity }}%;"></div>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
+                
+                <div class="explanation">
+                    <h3>How These Recommendations Work</h3>
+                    <p>Our AI algorithm analyzed the content attributes like genre, director, cast, and plot keywords to find movies with similar characteristics. The match percentage indicates how similar each movie is to your selection based on these factors.</p>
+                </div>
             {% else %}
-                <p class="no-results">No recommendations found.</p>
+                <p class="no-results">No recommendations found for this movie.</p>
             {% endif %}
             
             <div class="actions">
                 <a href="/" class="btn">Try Another Movie</a>
             </div>
         </div>
+        
+        <footer>
+            <p>Utilizing TF-IDF vectorization and cosine similarity algorithms</p>
+        </footer>
     </div>
 </body>
 </html>
