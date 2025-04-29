@@ -19,7 +19,7 @@ class MovieRecommender:
                     'The Matrix', 'Goodfellas', 'The Silence of the Lambs',
                     'Interstellar', 'The Lion King', 'Titanic', 'Jurassic Park',
                     'Avatar', 'The Avengers', 'Star Wars', 'Toy Story',
-                    'The Social Network', 'Parasite'
+                    'The Social Network', 'Parasite' 'The Usual Suspects', 'The Departed' ,'The Prestige', 'The Intouchables'
                 ],
                 'genres': [
                     'Drama', 'Crime,Drama', 'Action,Crime,Drama', 
@@ -27,7 +27,7 @@ class MovieRecommender:
                     'Action,Sci-Fi', 'Biography,Crime,Drama', 'Crime,Drama,Thriller',
                     'Adventure,Drama,Sci-Fi', 'Animation,Adventure,Drama', 'Drama,Romance', 'Adventure,Sci-Fi,Thriller',
                     'Action,Adventure,Fantasy', 'Action,Adventure,Sci-Fi', 'Action,Adventure,Fantasy', 'Animation,Adventure,Comedy',
-                    'Biography,Drama', 'Comedy,Drama,Thriller'
+                    'Biography,Drama', 'Comedy,Drama,Thriller' , "Crime,Drama,Thriller" , "Crime,Drama,Thriller" , "Drama,Mystery,Sci-Fi" , "Biography,Comedy,Drama"
                 ]
             })
             
