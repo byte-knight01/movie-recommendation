@@ -1,53 +1,156 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Movie Recommender</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI/ML Movie Recommender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 2rem;
+        }
+        .jumbotron {
+            background-color: #e9ecef;
+            padding: 2rem;
+            border-radius: 0.3rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        #movie-list {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            z-index: 1000;
+            display: none;
+        }
+        .movie-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .movie-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Intelligent Movie Recommender System</h1>
-            <p class="subtitle">Powered by AI/ML Content-Based Filtering</p>
-        </header>
-        
-        <div class="card">
-            <div class="info-section">
-                <h2>How It Works</h2>
-                <p>This movie recommender uses advanced AI and machine learning techniques to suggest movies similar to ones you like. The system analyzes movie attributes including:</p>
-                <ul>
-                    <li>Genre combinations</li>
-                    <li>Director styles</li>
-                    <li>Cast members</li>
-                    <li>Plot themes and keywords</li>
-                </ul>
-                <p>Using TF-IDF vectorization and cosine similarity algorithms, we measure the content similarity between movies to provide personalized recommendations.</p>
-            </div>
-            
-            <div class="form-section">
-                <h2>Find Similar Movies</h2>
-                <form action="/recommend" method="post">
-                    <div class="form-group">
-                        <label for="movie">Select a movie you enjoy:</label>
-                        <select name="movie" id="movie" required>
-                            <option value="">-- Select a movie --</option>
-                            {% for movie in movies %}
-                            <option value="{{ movie }}">{{ movie }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn">Get Recommendations</button>
-                </form>
-            </div>
+        <div class="jumbotron text-center">
+            <h1 class="display-4">AI/ML Movie Recommender</h1>
+            <p class="lead">Get personalized movie recommendations using advanced AI/ML algorithms</p>
         </div>
         
-        <footer>
-            <p>Based on research: "Intelligent Movie Recommendation System Using AI and ML"</p>
-            <p>Implementation uses Content-Based Filtering with TF-IDF and NLP techniques</p>
-        </footer>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Find Movies Similar To Your Favorites</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/recommend" method="POST">
+                            <div class="mb-3 search-container">
+                                <label for="movie" class="form-label">Enter a movie title:</label>
+                                <input type="text" class="form-control" id="movie-search" name="movie" autocomplete="off" required>
+                                <div id="movie-list"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="num_recommendations" class="form-label">Number of recommendations:</label>
+                                <select class="form-select" id="num_recommendations" name="num_recommendations">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Get Recommendations</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">About This Recommender</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5>Powered by AI/ML Technology</h5>
+                        <p>This recommender system uses advanced machine learning techniques including:</p>
+                        <ul>
+                            <li>TF-IDF Vectorization of movie features</li>
+                            <li>Natural Language Processing for text analysis</li>
+                            <li>Cosine Similarity for finding movie relationships</li>
+                            <li>MovieLens dataset with thousands of films</li>
+                        </ul>
+                        <p>Select any movie to get personalized recommendations based on content similarity!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>Movie Recommender System powered by AI/ML &copy; 2025</p>
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById('movie-search');
+        const movieList = document.getElementById('movie-list');
+        
+        // Search as you type
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                movieList.style.display = 'none';
+                return;
+            }
+            
+            fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(movies => {
+                    movieList.innerHTML = '';
+                    
+                    if (movies.length > 0) {
+                        movies.forEach(movie => {
+                            const item = document.createElement('div');
+                            item.className = 'movie-item';
+                            item.textContent = movie;
+                            item.addEventListener('click', () => {
+                                searchInput.value = movie;
+                                movieList.style.display = 'none';
+                            });
+                            movieList.appendChild(item);
+                        });
+                        movieList.style.display = 'block';
+                    } else {
+                        movieList.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching movies:', error);
+                });
+        });
+        
+        // Hide movie list when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target !== searchInput && event.target !== movieList) {
+                movieList.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
